@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "engines": {
+    "node": "22.4"
+  },
   "routes": [
     {
       "src": "/(.*)",

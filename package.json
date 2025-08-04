@@ -8,9 +8,6 @@
     "dev": "nodemon server.js",
     "build": "echo 'No build step required'"
   },
-  "engines": {
-    "node": "22.x"
-  },
   "keywords": ["ai", "chatbot", "llm", "webapp", "parenting", "toddler"],
   "author": "Maya Hope",
   "license": "MIT",
@@ -22,5 +19,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "engines": {
+    "node": "22.x"
+  },
 } 

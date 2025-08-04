@@ -11,9 +11,6 @@
   "keywords": ["ai", "chatbot", "llm", "webapp", "parenting", "toddler"],
   "author": "Maya Hope",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",

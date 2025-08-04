@@ -51,7 +51,18 @@ function addMessage(content, sender) {
     messageContent.className = 'message-content';
     
     const paragraph = document.createElement('p');
-    paragraph.textContent = content;
+    
+    // For bot messages, convert markdown formatting and line breaks
+    if (sender === 'bot') {
+        // Convert **text** to <strong>text</strong>
+        let formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Convert \n to <br>
+        formattedContent = formattedContent.replace(/\n/g, '<br>');
+        paragraph.innerHTML = formattedContent;
+    } else {
+        // For user messages, keep as plain text
+        paragraph.textContent = content;
+    }
     
     messageContent.appendChild(paragraph);
     messageDiv.appendChild(messageContent);

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Parenting coach powered by AI - troubleshoot toddler behavior with expert advice",
   "main": "server.js",
-"scripts": {
+  "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build": "echo 'No build step required'"
@@ -19,8 +19,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  },
-  "engines": {
-    "node": "22.x"
   }
 } 

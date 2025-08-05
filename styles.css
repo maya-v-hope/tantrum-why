@@ -285,9 +285,11 @@ body {
     }
     
     .chat-container {
-        height: calc(100vh - 180px);
-        min-height: 400px;
+        height: calc(100vh - 140px);
+        min-height: 350px;
         border-radius: 15px;
+        /* Better mobile viewport handling */
+        height: calc(100dvh - 140px); /* dvh = dynamic viewport height */
     }
     
     .message-content {
@@ -312,6 +314,11 @@ body {
     
     .input-container {
         padding: 15px;
+        /* Mobile keyboard optimization */
+        padding-bottom: max(15px, env(safe-area-inset-bottom));
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
     }
 }
 
@@ -329,8 +336,11 @@ body {
     }
     
     .chat-container {
-        height: calc(100vh - 160px);
+        height: calc(100vh - 120px);
+        min-height: 300px;
         border-radius: 12px;
+        /* Better mobile viewport handling for small screens */
+        height: calc(100dvh - 120px);
     }
     
     .message-content {
@@ -354,6 +364,13 @@ body {
     
     .input-container {
         padding: 12px;
+        /* Mobile keyboard optimization for small screens */
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        /* Ensure input stays above virtual keyboard */
+        min-height: 68px;
     }
 }
 

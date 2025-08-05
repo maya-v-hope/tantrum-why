@@ -17,6 +17,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Explicitly serve the social preview image
+app.get('/social-preview.png', (req, res) => {
+    res.sendFile(path.join(__dirname, 'social-preview.png'));
+});
+
 // API endpoint for chat
 app.post('/api/chat', async (req, res) => {
     try {

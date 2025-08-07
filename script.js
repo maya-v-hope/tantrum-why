@@ -4,6 +4,9 @@ const userInput = document.getElementById('user-input');
 const chatMessages = document.getElementById('chat-messages');
 const sendButton = document.getElementById('send-button');
 
+// Conversation history for context
+let conversationHistory = [];
+
 // Auto-resize textarea
 userInput.addEventListener('input', function() {
     this.style.height = 'auto';
@@ -28,12 +31,16 @@ chatForm.addEventListener('submit', async function(e) {
     showTypingIndicator();
     
     try {
-        // Simulate AI response (you'll replace this with actual API call)
+        // Get AI response with conversation context
         const response = await getAIResponse(message);
         
         // Remove typing indicator and add bot response
         removeTypingIndicator();
         addMessage(response, 'bot');
+        
+        // Add both user message and bot response to conversation history
+        conversationHistory.push({ role: 'user', content: message });
+        conversationHistory.push({ role: 'assistant', content: response });
         
     } catch (error) {
         removeTypingIndicator();
@@ -111,7 +118,10 @@ async function getAIResponse(userMessage) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify({ 
+                message: userMessage,
+                conversationHistory: conversationHistory
+            })
         });
         
         if (!response.ok) {

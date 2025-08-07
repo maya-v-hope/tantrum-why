@@ -25,15 +25,14 @@ app.get('/social-preview.png', (req, res) => {
 // API endpoint for chat
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message, conversationHistory } = req.body;
         
         if (!message) {
             return res.status(400).json({ error: 'Message is required' });
         }
 
-        // For now, return a simple response
-        // You'll integrate with an actual LLM API here
-        const response = await generateResponse(message);
+        // Use conversation history if provided, otherwise just the current message
+        const response = await generateResponse(message, conversationHistory || []);
         
         res.json({ response });
         
@@ -46,7 +45,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // Real OpenAI response generation
-async function generateResponse(userMessage) {
+async function generateResponse(userMessage, conversationHistory = []) {
     // Check if OpenAI API key is configured
     if (!process.env.OPENAI_API_KEY) {
         throw new Error('OpenAI API key not configured. Please add OPENAI_API_KEY to your .env file.');
@@ -58,18 +57,31 @@ async function generateResponse(userMessage) {
     });
     
     try {
+        // Build messages array starting with system prompt
+        const messages = [
+            {
+                role: "system",
+                content: getSystemPrompt()
+            }
+        ];
+
+        // Add conversation history
+        conversationHistory.forEach(msg => {
+            messages.push({
+                role: msg.role,
+                content: msg.content
+            });
+        });
+
+        // Add current user message
+        messages.push({
+            role: "user",
+            content: userMessage
+        });
+
         const completion = await openai.chat.completions.create({
             model: "gpt-4o",
-            messages: [
-                {
-                    role: "system",
-                    content: getSystemPrompt()
-                },
-                {
-                    role: "user",
-                    content: userMessage
-                }
-            ],
+            messages: messages,
             max_tokens: 500,
             temperature: 0.7,
         });

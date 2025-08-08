@@ -397,13 +397,17 @@ body {
     }
     
     .chat-container {
-        height: calc(100vh - 80px);
+        /* Fixed height to prevent URL bar overlap */
+        height: calc(100vh - 120px);
         min-height: 300px;
+        max-height: calc(100vh - 120px);
         border-radius: 12px;
         /* Better mobile viewport handling for small screens */
-        height: calc(100dvh - 80px);
-        /* Reduce empty space by changing flex behavior */
+        height: calc(100dvh - 120px);
+        max-height: calc(100dvh - 120px);
+        /* Ensure proper flex behavior */
         justify-content: flex-start;
+        overflow: hidden;
     }
     
     .message-content {
@@ -423,9 +427,12 @@ body {
     
     .chat-messages {
         padding: 12px;
-        /* Reduce flex growth to minimize empty space on mobile */
-        flex: 0 1 auto;
-        min-height: 120px;
+        /* Ensure messages area is scrollable and doesn't expand container */
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        /* Ensure proper scrolling behavior */
+        -webkit-overflow-scrolling: touch;
     }
     
     .welcome-message {
@@ -449,10 +456,13 @@ body {
         padding: 12px;
         /* Mobile keyboard optimization for small screens */
         padding-bottom: max(12px, env(safe-area-inset-bottom));
-        /* Remove sticky positioning to reduce empty space */
+        /* Keep input container at bottom */
+        flex-shrink: 0;
         position: relative;
         /* Ensure input stays above virtual keyboard */
         min-height: 68px;
+        /* Ensure it's always visible */
+        z-index: 10;
     }
 }
 

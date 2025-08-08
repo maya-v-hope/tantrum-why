@@ -20,6 +20,15 @@ chatForm.addEventListener('submit', async function(e) {
     const message = userInput.value.trim();
     if (!message) return;
     
+    // Track typed message submission
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'message_sent', {
+            'event_category': 'engagement',
+            'event_label': 'typed_message',
+            'value': 1
+        });
+    }
+    
     // Add user message to chat
     addMessage(message, 'user');
     
@@ -37,6 +46,15 @@ chatForm.addEventListener('submit', async function(e) {
         // Remove typing indicator and add bot response
         removeTypingIndicator();
         addMessage(response, 'bot');
+        
+        // Track successful AI response
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'ai_response_received', {
+                'event_category': 'engagement',
+                'event_label': 'successful_interaction',
+                'value': 1
+            });
+        }
         
         // Add both user message and bot response to conversation history
         conversationHistory.push({ role: 'user', content: message });
@@ -165,6 +183,15 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', async function() {
             const message = this.dataset.message;
             
+            // Track quick reply button usage
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quick_reply_used', {
+                    'event_category': 'engagement',
+                    'event_label': message,
+                    'value': 1
+                });
+            }
+            
             // Add activated state
             this.classList.add('activated');
             
@@ -191,6 +218,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Remove typing indicator and add bot response
                 removeTypingIndicator();
                 addMessage(response, 'bot');
+                
+                // Track successful AI response from quick reply
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'ai_response_received', {
+                        'event_category': 'engagement',
+                        'event_label': 'quick_reply_interaction',
+                        'value': 1
+                    });
+                }
                 
                 // Add both user message and bot response to conversation history
                 conversationHistory.push({ role: 'user', content: message });

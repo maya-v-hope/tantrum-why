@@ -347,6 +347,8 @@ body {
         border-radius: 12px;
         /* Better mobile viewport handling for small screens */
         height: calc(100dvh - 80px);
+        /* Reduce empty space by changing flex behavior */
+        justify-content: flex-start;
     }
     
     .message-content {
@@ -366,6 +368,9 @@ body {
     
     .chat-messages {
         padding: 12px;
+        /* Reduce flex growth to minimize empty space on mobile */
+        flex: 0 1 auto;
+        min-height: 120px;
     }
     
     .welcome-message {
@@ -376,9 +381,8 @@ body {
         padding: 12px;
         /* Mobile keyboard optimization for small screens */
         padding-bottom: max(12px, env(safe-area-inset-bottom));
-        position: sticky;
-        bottom: 0;
-        z-index: 10;
+        /* Remove sticky positioning to reduce empty space */
+        position: relative;
         /* Ensure input stays above virtual keyboard */
         min-height: 68px;
     }

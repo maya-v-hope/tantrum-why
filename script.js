@@ -153,4 +153,73 @@ userInput.addEventListener('input', function() {
 // Focus input on page load
 window.addEventListener('load', function() {
     userInput.focus();
+});
+
+// Quick Reply Buttons Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const quickReplies = document.getElementById('quick-replies');
+    const quickReplyButtons = document.querySelectorAll('.quick-reply-btn');
+    
+    // Add click event listeners to all quick reply buttons
+    quickReplyButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const message = this.dataset.message;
+            
+            // Add activated state
+            this.classList.add('activated');
+            
+            // Disable all quick reply buttons to prevent multiple clicks
+            quickReplyButtons.forEach(btn => btn.disabled = true);
+            
+            // Inject message into input and trigger submission
+            userInput.value = message;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            
+            // Clear input
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            try {
+                // Get AI response with conversation context
+                const response = await getAIResponse(message);
+                
+                // Remove typing indicator and add bot response
+                removeTypingIndicator();
+                addMessage(response, 'bot');
+                
+                // Add both user message and bot response to conversation history
+                conversationHistory.push({ role: 'user', content: message });
+                conversationHistory.push({ role: 'assistant', content: response });
+                
+                // Hide quick replies after first interaction
+                if (quickReplies) {
+                    quickReplies.style.display = 'none';
+                }
+                
+            } catch (error) {
+                removeTypingIndicator();
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                console.error('Error:', error);
+                
+                // Re-enable buttons on error
+                quickReplyButtons.forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('activated');
+                });
+            }
+        });
+        
+        // Add keyboard support for accessibility
+        button.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+    });
 }); 

@@ -83,6 +83,59 @@ body {
     margin-bottom: 15px;
 }
 
+/* Quick Reply Buttons */
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 0 12px;
+}
+
+.quick-reply-btn {
+    background: rgba(102, 126, 234, 0.08);
+    border: 1.5px solid rgba(102, 126, 234, 0.2);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    /* Accessibility */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.quick-reply-btn:hover {
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.quick-reply-btn:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.quick-reply-btn:active,
+.quick-reply-btn.activated {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.quick-reply-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .message {
     margin-bottom: 20px;
     display: flex;
@@ -375,6 +428,19 @@ body {
     
     .welcome-message {
         margin-bottom: 8px;
+    }
+    
+    /* Quick reply buttons mobile optimization */
+    .quick-replies {
+        gap: 6px;
+        margin-top: 12px;
+        padding: 0 8px;
+    }
+    
+    .quick-reply-btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        border-radius: 16px;
     }
     
     .input-container {

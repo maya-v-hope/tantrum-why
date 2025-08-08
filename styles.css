@@ -193,7 +193,7 @@ body {
 .input-wrapper {
     flex: 1;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: 12px;
     background: #f8fafc;
     border-radius: 25px;
@@ -217,13 +217,15 @@ body {
     font-size: 16px; /* Prevent zoom on iOS */
     resize: none;
     max-height: 120px;
-    padding: 8px 0;
+    padding: 10px 0;
     line-height: 1.4;
     /* Mobile input optimizations */
     -webkit-appearance: none;
     border-radius: 0;
     /* Prevent iOS styling */
     -webkit-tap-highlight-color: transparent;
+    /* Better vertical alignment for placeholder */
+    vertical-align: middle;
 }
 
 .user-input::placeholder {

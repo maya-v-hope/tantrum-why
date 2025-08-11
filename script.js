@@ -34,6 +34,34 @@ const followUpReplies = [
 
 let followUpCounter = 0; // To add variety in follow-up selection
 
+// Function to detect if AI response indicates resolution/completion (should suppress follow-up chips)
+function isResolutionResponse(response) {
+    // Convert to lowercase for case-insensitive matching
+    const lowerResponse = response.toLowerCase();
+    
+    // Check for resolution/completion patterns
+    const resolutionPatterns = [
+        /glad.*found.*helpful/,
+        /happy.*it.*helped/,
+        /great.*hear/,
+        /wonderful.*worked/,
+        /you're doing great/,
+        /keep.*up.*good.*work/,
+        /sounds like.*going.*well/,
+        /glad.*could.*help/,
+        /nice.*work/,
+        /that's.*progress/,
+        /you've got this/,
+        /proud.*you/,
+        /let.*know.*if.*need.*more/,
+        /feel.*free.*reach.*out/,
+        /any.*other.*challenges/
+    ];
+    
+    // Check if response indicates positive resolution
+    return resolutionPatterns.some(pattern => pattern.test(lowerResponse));
+}
+
 // Function to detect if AI response is asking questions (should suppress follow-up chips)
 function isAskingQuestions(response) {
     // Convert to lowercase for case-insensitive matching
@@ -64,6 +92,11 @@ function isAskingQuestions(response) {
     return hasQuestionMarks && hasQuestionPatterns;
 }
 
+// Function to detect if follow-up chips should be suppressed
+function shouldSuppressFollowUps(response) {
+    return isAskingQuestions(response) || isResolutionResponse(response);
+}
+
 // Function to create follow-up quick replies
 function addFollowUpReplies(aiResponse = '') {
     // Remove any existing follow-up replies
@@ -72,13 +105,17 @@ function addFollowUpReplies(aiResponse = '') {
         existingFollowUps.remove();
     }
     
-    // Don't add follow-up chips if AI is asking questions for more information
-    if (isAskingQuestions(aiResponse)) {
-        // Track when follow-ups are suppressed due to questions
+    // Don't add follow-up chips if AI is asking questions or indicating resolution
+    if (shouldSuppressFollowUps(aiResponse)) {
+        // Determine the reason for suppression
+        const suppressionReason = isAskingQuestions(aiResponse) ? 'question_detected' : 
+                                 isResolutionResponse(aiResponse) ? 'resolution_detected' : 'other';
+        
+        // Track when follow-ups are suppressed
         if (typeof gtag !== 'undefined') {
             gtag('event', 'followup_suppressed', {
                 'event_category': 'engagement',
-                'event_label': 'question_detected',
+                'event_label': suppressionReason,
                 'value': 1
             });
         }
